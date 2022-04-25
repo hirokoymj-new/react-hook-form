@@ -1,10 +1,24 @@
-# React Hook Form
+import React from "react";
+import { useForm, SubmitHandler } from "react-hook-form";
 
-## Quick Start
+enum GenderEnum {
+  female = "female",
+  male = "male",
+  other = "other",
+}
+enum ColorEnum {
+  white = "white",
+  red = "red",
+}
 
-- [useForm](https://react-hook-form.com/api/useform)
+interface IFormInputs {
+  firstName: string;
+  lastName: string;
+  age: number;
+  gender: GenderEnum;
+  colors: ColorEnum[];
+}
 
-```js
 export const FormQuickStart = () => {
   const {
     register,
@@ -15,6 +29,7 @@ export const FormQuickStart = () => {
   } = useForm<IFormInputs>();
 
   const onSubmit: SubmitHandler<IFormInputs> = (data) => {
+    console.log("onSubmit");
     console.log(data);
   };
   console.log(watch("firstName"));
@@ -65,4 +80,3 @@ export const FormQuickStart = () => {
     </div>
   );
 };
-```
