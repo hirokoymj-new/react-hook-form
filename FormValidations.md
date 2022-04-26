@@ -1,6 +1,8 @@
-# Form Validation with yup
+# Form Validation with Yup
 
-# YUP validation with input text
+- [Yup - schema-based form validation](https://github.com/jquense/yup)
+
+### Input and email fields validation
 
 ```js
 const schema = yup
@@ -10,14 +12,11 @@ const schema = yup
       .string()
       .required("email is required")
       .email("Check an email format"),
-    acceptTerms: yup.boolean().oneOf([true], "Accept Ts & Cs is required"),
-    colors: yup.array().min(1).of(yup.string().required("color is required")),
-    gender: yup.string().required("gender is required."),
   })
   .required();
 ```
 
-# yup validation with Dropdown, single Checkbox and multiple checkboxes
+### A dropdown, a checkbox and multiple checkboxes validation
 
 ```js
 type FormExampleInputs = {
