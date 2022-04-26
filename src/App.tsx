@@ -1,7 +1,7 @@
 import React from "react";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import { FormQuickStart } from "Components/FormQuickStart";
-import { FormBasic } from "Components/FormBasic";
+import { FormBasic, FormCheckboxDropdownExample } from "Components/FormBasic";
 import { FormMaterial } from "Components/FormMaterial";
 import { FormLogin } from "Components/FormLogin";
 import { FormLoginMaterial } from "Components/FormLoginMaterial";
@@ -29,6 +29,10 @@ export default function App() {
             <Link to="/form1">Form Basic</Link>
           </li>
           <li>
+            <Link to="/form-checkbox">Form Checkbox Dropdown Example</Link>
+          </li>
+
+          <li>
             <Link to="/form2">Form Material-1</Link>
           </li>
           <li>
@@ -48,6 +52,10 @@ export default function App() {
           <Route path="/" exact component={Home} />
           <Route path="/form0" component={FormQuickStart} />
           <Route path="/form1" component={FormBasic} />
+          <Route
+            path="/form-checkbox"
+            component={FormCheckboxDropdownExample}
+          />
           <Route path="/form2" component={FormMaterial} />
           <Route path="/form3" component={FormLogin} />
           <Route path="/form4" component={FormLoginMaterial} />

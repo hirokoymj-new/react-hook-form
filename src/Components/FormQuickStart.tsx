@@ -61,8 +61,7 @@ export const FormQuickStart = () => {
           </select>
         </div>
         <div>
-          <label>Days:</label>
-
+          <label>Colors:</label>
           <label key="white">
             <input type="checkbox" value="white" {...register("colors")} />
             white
