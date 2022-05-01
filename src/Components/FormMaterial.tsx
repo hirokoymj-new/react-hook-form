@@ -1,20 +1,37 @@
 import React from "react";
 import { useForm, Controller, SubmitHandler } from "react-hook-form";
-import { TextField, Checkbox } from "@material-ui/core";
+import {
+  TextField,
+  Checkbox,
+  Grid,
+  Container,
+  Button,
+} from "@material-ui/core";
+import * as yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
 
-enum GenderEnum {
-  female = "female",
-  male = "male",
-  other = "other",
-}
+// enum GenderEnum {
+//   female = "female",
+//   male = "male",
+//   other = "other",
+// }
 
 type IFormInputs = {
   firstName: string;
-  lastName: string;
-  MyCheckbox: boolean;
-  age: number;
-  gender: GenderEnum;
+  // lastName: string;
+  // MyCheckbox: boolean;
+  // age: number;
+  // gender: GenderEnum;
 };
+
+const schema = yup
+  .object({
+    firstName: yup.string().required("Please fill in your first name."),
+    // lastName: yup.string().required(),
+    // MyCheckbox: yup.boolean().oneOf([true], "Accept Ts & Cs is required"),
+    // gender: yup.string().required("gender is required."),
+  })
+  .required();
 
 export const FormMaterial = () => {
   const {
@@ -22,33 +39,36 @@ export const FormMaterial = () => {
     control,
     reset,
     formState: { errors },
-  } = useForm<IFormInputs>();
+    getValues,
+  } = useForm<IFormInputs>({
+    resolver: yupResolver(schema),
+  });
   const onSubmit: SubmitHandler<IFormInputs> = (data) => {
-    // console.log("onSubmit");
-    // console.log(data);
     alert(JSON.stringify(data));
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <Controller
-        name="firstName"
-        control={control}
-        // defaultValue="Hiroko"
-        rules={{ required: true }}
-        render={({ field: { onChange, value }, fieldState: { error } }) => (
-          <TextField
-            onChange={onChange}
-            value={value}
-            fullWidth
-            label="First name"
-            variant="outlined"
-            helperText={error ? "First name is required" : null}
-            error={!!error}
+    <Container maxWidth="sm">
+      <Grid item xs={12}>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <Controller
+            name="firstName"
+            control={control}
+            // defaultValue="Hiroko"
+            // rules={{ required: true }}
+            render={({ field: { onChange, value } }) => (
+              <TextField
+                onChange={onChange}
+                value={value}
+                fullWidth
+                label="First name"
+                variant="outlined"
+                helperText={errors.firstName && errors.firstName?.message}
+                error={!!errors.firstName}
+              />
+            )}
           />
-        )}
-      />
-      <br /> <br />
+          {/* <br /> <br />
       <Controller
         name="lastName"
         control={control}
@@ -81,12 +101,15 @@ export const FormMaterial = () => {
         defaultValue={false}
         rules={{ required: true }}
         render={({ field }) => <Checkbox {...field} />}
-      />
-      <br />
-      <input type="submit" />
-      <button type="button" onClick={() => reset()}>
-        Reset
-      </button>
-    </form>
+      /> */}
+          <br />
+          <input type="submit" />
+          <button type="button" onClick={() => reset()}>
+            Reset
+          </button>
+        </form>
+        <pre>{JSON.stringify(getValues())}</pre>
+      </Grid>
+    </Container>
   );
 };

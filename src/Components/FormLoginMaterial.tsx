@@ -2,17 +2,33 @@ import React from "react";
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { TextField } from "@material-ui/core";
+import {
+  TextField,
+  Container,
+  Select,
+  MenuItem,
+  FormHelperText,
+  FormControl,
+  InputLabel,
+  Checkbox,
+  FormLabel,
+} from "@material-ui/core";
 
-type Inputs = {
+type FormInputs = {
+  firstName: string;
   email: string;
   password: string;
+  gender: string;
+  acceptTerms: boolean;
 };
 
 const schema = yup
   .object({
-    email: yup.string().required(),
-    password: yup.string().min(4).max(20).required(),
+    firstName: yup.string().required("Please fill in your first name"),
+    email: yup.string().email().required("Please fill in your email!!"),
+    password: yup.string().min(4).max(10),
+    gender: yup.string().required(),
+    acceptTerms: yup.boolean().oneOf([true], "Accept Ts & Cs is required"),
   })
   .required();
 
@@ -24,23 +40,46 @@ export const FormLoginMaterial = () => {
     watch,
     reset,
     formState: { errors },
-  } = useForm<Inputs>({
+  } = useForm<FormInputs>({
     resolver: yupResolver(schema),
+    defaultValues: {
+      firstName: "",
+      email: "",
+      password: "",
+      gender: "",
+      acceptTerms: false,
+    },
   });
 
-  const onSubmit: SubmitHandler<Inputs> = (data) => {
+  const onSubmit: SubmitHandler<FormInputs> = (data) => {
     console.log(data);
     alert(JSON.stringify(data));
   };
   console.log(errors);
   console.log(watch("email"));
   return (
-    <div>
+    <Container maxWidth="sm">
       <form onSubmit={handleSubmit(onSubmit)}>
+        <Controller
+          name="firstName"
+          control={control}
+          // defaultValue="Hiroko"
+          render={({ field }) => (
+            <TextField
+              {...field}
+              fullWidth
+              label="First Name"
+              variant="outlined"
+              helperText={errors.firstName ? errors.firstName.message : ""}
+              error={!!errors.firstName}
+            />
+          )}
+        />
+        <br />
+        <br />
         <Controller
           name="email"
           control={control}
-          defaultValue="Hiroko"
           render={({ field }) => (
             <TextField
               {...field}
@@ -57,7 +96,6 @@ export const FormLoginMaterial = () => {
         <Controller
           name="password"
           control={control}
-          defaultValue=""
           render={({ field }) => (
             <TextField
               {...field}
@@ -71,12 +109,42 @@ export const FormLoginMaterial = () => {
         />
         <br></br>
         <br></br>
-
-        <input type="submit" />
-        <button type="button" onClick={() => reset()}>
-          Reset
-        </button>
+        <FormControl
+          error={errors.gender ? true : false}
+          style={{ width: "100%" }}>
+          <FormLabel htmlFor="gender">Gender:</FormLabel>
+          <Controller
+            name="gender"
+            control={control}
+            render={({ field }) => (
+              <Select {...field} variant="outlined">
+                <MenuItem value="male">Male</MenuItem>
+                <MenuItem value="female">Female</MenuItem>
+              </Select>
+            )}
+          />
+          <FormHelperText>{errors.gender?.message}</FormHelperText>
+        </FormControl>
+        <br />
+        <br />
+        <FormControl
+          style={{ width: "100%" }}
+          error={errors.acceptTerms ? true : false}>
+          <FormLabel component="legend">Accept Terms and Conditions</FormLabel>
+          <Controller
+            name="acceptTerms"
+            control={control}
+            render={({ field }) => <Checkbox {...field} />}
+          />
+          <FormHelperText>{errors.acceptTerms?.message}</FormHelperText>
+        </FormControl>
+        <div>
+          <input type="submit" />
+          <button type="button" onClick={() => reset()}>
+            Reset
+          </button>
+        </div>
       </form>
-    </div>
+    </Container>
   );
 };
