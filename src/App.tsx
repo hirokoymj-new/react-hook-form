@@ -21,6 +21,10 @@ import { FormDropdownMUI_Provider } from "Components/Dropdown/FormDropdownMUI_Pr
 // Checkbox
 import { FormCheckbox } from "Components/Checkbox/FormCheckbox";
 import { FormCheckboxMUI } from "Components/Checkbox/FormCheckboxMUI";
+import { FormCheckboxMUI_Provider } from "Components/Checkbox/FormCheckboxMUI_Provider";
+// Radio
+import { FormRadio } from "Components/Radio/FormRadio";
+import { FormRadioMUI } from "Components/Radio/FormRadioMUI";
 
 import "./App.css";
 
@@ -41,7 +45,9 @@ export default function App() {
             <Link to="/text-field-mui">Text Field MUI</Link>
           </li>
           <li>
-            <Link to="/text-field-mui-provider">Text Field MUI Provider</Link>
+            <Link to="/text-field-mui-provider">
+              Text Field MUI with FormProvider
+            </Link>
           </li>
         </ul>
         <hr />
@@ -54,7 +60,9 @@ export default function App() {
             <Link to="/dropdown-mui">Dropdown MUI</Link>
           </li>
           <li>
-            <Link to="/dropdown-mui-provider">Dropdown MUI Provider</Link>
+            <Link to="/dropdown-mui-provider">
+              Dropdown MUI with FormProvider
+            </Link>
           </li>
         </ul>
         <hr />
@@ -66,8 +74,23 @@ export default function App() {
           <li>
             <Link to="/checkbox-mui">Checkbox MUI</Link>
           </li>
+          <li>
+            <Link to="/checkbox-mui-provider">
+              Checkbox MUI with FormProvider (not working)
+            </Link>
+          </li>
         </ul>
-
+        <hr />
+        <ul>
+          <h1>Radio button</h1>
+          <li>
+            <Link to="/radio">Radio button</Link>
+          </li>
+          <li>
+            <Link to="/radio-mui">Radio MUI</Link>
+          </li>
+        </ul>
+        <hr />
         <ul>
           <li>
             <Link to="/">Home</Link>
@@ -142,6 +165,12 @@ export default function App() {
           />
           <Route path="/checkbox" component={FormCheckbox} />
           <Route path="/checkbox-mui" component={FormCheckboxMUI} />
+          <Route
+            path="/checkbox-mui-provider"
+            component={FormCheckboxMUI_Provider}
+          />
+          <Route path="/radio" component={FormRadio} />
+          <Route path="/radio-mui" component={FormRadioMUI} />
         </Switch>
       </div>
     </Router>

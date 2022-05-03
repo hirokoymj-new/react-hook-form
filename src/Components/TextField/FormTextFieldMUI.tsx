@@ -1,7 +1,8 @@
+import React, { useEffect } from "react";
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { TextField, Container } from "@material-ui/core";
+import { TextField, Container, Button } from "@material-ui/core";
 
 interface IFormInputs {
   firstName: string;
@@ -14,13 +15,26 @@ const schema = yup
   .required();
 
 export const FormTextFieldMUI = () => {
-  const { handleSubmit, control } = useForm<IFormInputs>({
+  const {
+    handleSubmit,
+    control,
+    formState: { errors, isSubmitSuccessful, isDirty },
+    reset,
+  } = useForm<IFormInputs>({
     resolver: yupResolver(schema),
   });
+
+  useEffect(() => {
+    if (isSubmitSuccessful) {
+      reset();
+    }
+  }, [isSubmitSuccessful, reset]);
 
   const onSubmit: SubmitHandler<IFormInputs> = (data) => {
     console.log(data);
   };
+
+  console.log("isDirty", isDirty);
 
   return (
     <Container maxWidth="sm">
@@ -29,25 +43,43 @@ export const FormTextFieldMUI = () => {
           <Controller
             name="firstName"
             control={control}
-            defaultValue="Hiroko"
-            // render={({ field: { onChange, value }, fieldState: { error } }) => (
-            render={({ field, fieldState: { error } }) => (
-              <TextField
-                // onChange={onChange}
-                // value={value}
-                {...field}
-                type="text"
-                fullWidth
-                label="First name"
-                variant="outlined"
-                margin="normal"
-                helperText={error ? error.message : null}
-                error={!!error} //Converts Object to boolean
-              />
-            )}
+            defaultValue=""
+            render={({ field, fieldState: { error } }) => {
+              console.log("error", error);
+              return (
+                <TextField
+                  // onChange={onChange}
+                  // value={value}
+                  {...field}
+                  type="text"
+                  fullWidth
+                  label="First name"
+                  variant="outlined"
+                  margin="normal"
+                  helperText={error && isDirty && error.message}
+                  error={!!error && isDirty} //Converts Object to boolean
+                />
+              );
+            }}
           />
         </section>
-        <input type="submit" />
+        <Button
+          type="submit"
+          variant="contained"
+          color="primary"
+          style={{ width: "100%" }}>
+          Submit
+        </Button>
+        <br />
+        <br />
+        <Button
+          type="submit"
+          variant="contained"
+          color="primary"
+          style={{ width: "100%" }}
+          onClick={() => reset()}>
+          Reset
+        </Button>
       </form>
     </Container>
   );

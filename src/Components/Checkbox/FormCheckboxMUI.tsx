@@ -3,27 +3,13 @@ import { useForm, SubmitHandler, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import {
-  Button,
-  Grid,
-  TextField,
   FormControl,
-  MenuItem,
   FormHelperText,
-  InputLabel,
-  Select,
-  Container,
   Checkbox,
   FormControlLabel,
-  RadioGroup,
-  Radio,
-  FormLabel,
   FormGroup,
 } from "@material-ui/core";
 
-enum ColorsEnum {
-  white = "white",
-  red = "red",
-}
 interface FormInputs {
   acceptTerms: boolean;
   attend: boolean;
@@ -42,10 +28,9 @@ const formSchema = yup
 
 export const FormCheckboxMUI = () => {
   const defaultColors = ["white"];
-  const [checkedValues, setCheckedValues] = useState(defaultColors);
+  const [checkedValues, setCheckedValues] = useState<string[]>(defaultColors);
 
   const {
-    register,
     handleSubmit,
     formState: { errors },
     getValues,
@@ -54,31 +39,12 @@ export const FormCheckboxMUI = () => {
     resolver: yupResolver(formSchema),
     defaultValues: {
       acceptTerms: false,
-      attend: false,
-      colors: defaultColors,
+      attend: true, // Testing default value is true
+      colors: defaultColors, //["white"]
     },
   });
 
   const onSubmit: SubmitHandler<FormInputs> = (data) => console.log(data);
-
-  // const handleChange = (e: any) => {
-  //   const newVal = e.target.value;
-  //   const checked = e.target.checked;
-  //   console.log(checked);
-  //   console.log(newVal);
-  // };
-
-  // function handleSelect(e: any) {
-  //   // console.log("handleSelect");
-  //   // console.log(e.target.value);
-  //   const checkedName = e.target.value as string;
-  //   const newNames = checkedValues?.includes(checkedName)
-  //     ? checkedValues?.filter((name) => name !== checkedName)
-  //     : [...(checkedValues ?? []), checkedName];
-  //   setCheckedValues(newNames);
-
-  //   return newNames;
-  // }
 
   const handleCheckbox = (e: any) => {
     console.log("handleCheckbox");
@@ -117,12 +83,15 @@ export const FormCheckboxMUI = () => {
               <Controller
                 name="attend"
                 control={control}
-                render={({ field }) => (
-                  <FormControlLabel
-                    control={<Checkbox {...field} />}
-                    label="Attend a party"
-                  />
-                )}
+                render={({ field }) => {
+                  console.log(field);
+                  return (
+                    <FormControlLabel
+                      control={<Checkbox {...field} checked={field.value} />}
+                      label="Attend a party"
+                    />
+                  );
+                }}
               />
             </FormGroup>
             <FormHelperText>{errors.attend?.message}</FormHelperText>
@@ -136,6 +105,7 @@ export const FormCheckboxMUI = () => {
               render={({ field }) => {
                 // console.log("field", field.value);
                 // console.log("checked", field.value.includes("white"));
+                console.log(field);
                 return (
                   <FormControlLabel
                     control={
